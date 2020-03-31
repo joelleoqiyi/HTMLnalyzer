@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>HTMLnalyzer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css"></script> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower&display=swap" rel="stylesheet">
+	</head>
+	<body id="options_body">
+    <div id="options_centre">
+      <center><div id="notification_instructions_top">Select the TAGS for analysis...</div></center>
+		<form action="{{ url_for('options')}}" method="POST" id="html_form_options">
+			<input type="hidden" name="url" value={{url}}></input>
+      <center><div class="pretty p-image p-plain p-curve p-smooth p-toggle">
+         <input type="checkbox" name="options_tag" value="a"/>
+         <div class="state p-on">
+             <img class="image" src="static/tick.png">
+             <label>&lt;a&gt; tag chosen</label>
+         </div>
+         <div class="state p-off">
+            <img class="image" src="static/cross.png">
+            <label>&lt;a&gt; tag </label>
+        </div>
+      </div></center>
+      <br>
+       <center><div class="pretty p-image p-plain p-curve p-smooth p-toggle">
+          <input type="checkbox" name="options_tag" value="p"/>
+          <div class="state p-on">
+              <img class="image" src="static/tick.png">
+              <label>&lt;p&gt; tag chosen</label>
+          </div>
+          <div class="state p-off">
+             <img class="image" src="static/cross.png">
+             <label>&lt;p&gt; tag </label>
+         </div>
+       </div></center>
+       <br>
+      <center><div class="pretty p-image p-plain p-curve p-smooth p-toggle">
+         <input type="checkbox" name="options_tag" value="li"/>
+         <div class="state p-on">
+             <img class="image" src="static/tick.png">
+             <label>&lt;li&gt; tag chosen</label>
+         </div>
+         <div class="state p-off">
+            <img class="image" src="static/cross.png">
+            <label>&lt;li&gt; tag </label>
+        </div>
+     </div></center>
+     <br>
+       <center><div class="pretty p-image p-plain p-curve p-smooth p-toggle">
+          <input type="checkbox" name="options_tag" value="h1"/>
+          <div class="state p-on">
+              <img class="image" src="static/tick.png">
+              <label>&lt;h1&gt; tag chosen</label>
+          </div>
+          <div class="state p-off">
+             <img class="image" src="static/cross.png">
+             <label>&lt;h1&gt; tag </label>
+         </div>
+      </div></center>
+      <br>
+      <center><div class="pretty p-image p-plain p-curve p-smooth p-toggle">
+         <input type="checkbox" name="options_tag" value="h2"/>
+         <div class="state p-on">
+             <img class="image" src="static/tick.png">
+             <label>&lt;h2&gt; tag chosen</label>
+         </div>
+         <div class="state p-off">
+            <img class="image" src="static/cross.png">
+            <label>&lt;h2&gt; tag </label>
+        </div>
+     </div></center>
+     <br>
+     <center><div class="pretty p-image p-plain p-curve p-smooth p-toggle">
+        <input type="checkbox" name="options_tag" value="h3"/>
+        <div class="state p-on">
+            <img class="image" src="static/tick.png">
+            <label>&lt;h3&gt; tag chosen</label>
+        </div>
+        <div class="state p-off">
+           <img class="image" src="static/cross.png">
+           <label>&lt;h3&gt; tag </label>
+       </div>
+        </div></center>
+        <br>
+        <center><div class="pretty p-image p-plain p-curve p-smooth p-toggle">
+           <input type="checkbox" name="options_tag" value="img"/>
+           <div class="state p-on">
+               <img class="image" src="static/tick.png">
+               <label>&lt;img&gt; tag chosen</label>
+           </div>
+           <div class="state p-off">
+              <img class="image" src="static/cross.png">
+              <label>&lt;img&gt; tag </label>
+          </div>
+        </div></center>
+        <br>
+		</form>
+
+    </div>
+
+
+	</body>
+  <script>
+    var form_options = document.getElementById("html_form_options");
+    var notification_instructions = document.getElementById("notification_instructions");
+    var notification_instructions_top = document.getElementById("notification_instructions_top");
+    document.addEventListener('DOMContentLoaded', () => {
+        'use strict';
+
+        notification_instructions_top.className = "show";
+        setTimeout(function(){
+          notification_instructions_top.className = notification_instructions_top.className.replace("show", "");
+          notification_instructions_top.innerHTML = "Click ENTER to start analysis..";
+          notification_instructions_top.className = "show";
+
+        }, 5800);
+
+
+        document.addEventListener('keydown', event => {
+          if (event.key == "Enter"){
+            form_options.submit();
+            //alert("this is amazing!!");
+          };
+        });
+    });
+
+  </script>
+</html>

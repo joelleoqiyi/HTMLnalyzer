@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>HTMLnalyzer</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower&display=swap" rel="stylesheet">
+	</head>
+	<body id="index_body">
+    <p class="title title_fontsize">HTMLnalyzer
+      <div class="title subtitle_fontsize">helping you understand HTML...</div>
+    </p>
+    <br>
+		<form action="{{ url_for('index')}}" method="POST">
+      <center><input type="url" placeholder="type in your url here.." name="url" id="url_textbox" value={{url}}></input></center>
+		</form>
+    <center><div id="notification_prototype">NOTE: This is a prototype!</div></center>
+	</body>
+
+  <script>
+    var notification_prototype = document.getElementById("notification_prototype");
+    document.addEventListener('DOMContentLoaded', () => {
+        'use strict';
+
+        notification_prototype.className = "show";
+        setTimeout(function(){
+          notification_prototype.className = notification_prototype.className.replace("show", "");
+        }, 5800);
+    });
+  </script>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>HTMLnalyzer</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body id="analyse_body">
+    <h1 id="analyse_html_code">HTML Code Retrieved</h1>
+    <div id="urlholder">
+      The URL you have given is:
+      <span id="reference_url">{{ url }}</span>
+    </div>
+    <pre><div>{{html}}</div></pre>
+    <hr />
+    <h1 id="analyse_analysis">Deciphered/ Analysed Code</h1>
+    {% for explanationline in explanation %}
+      <pre><div>{{explanationline}}</div></pre>
+    {% endfor %}
+
+    <form id="analyse_form" action="{{ url_for('redo')}}" method="POST" onsubmit="alert('rerouting you back to previous page...')">
+      <input type="hidden" value={{ url }} name="url_query">
+      <!--<input type="submit" value="go back to previous page"></input>-->
+    </form>
+    <button class="button" style="vertical-align:middle" id="analyse_button");><span>Back to Front Page </span></button>
+	</body>
+  <script>
+    var analyse_form = document.getElementById('analyse_form');
+    var analyse_button = document.getElementById('analyse_button');
+    analyse_button.addEventListener('click', event => {
+        analyse_form.submit();
+    });
+  </script>
+</html>
