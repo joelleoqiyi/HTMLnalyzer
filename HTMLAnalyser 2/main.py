@@ -13,9 +13,13 @@ def index():
     return render_template('index.html')
   else:
     url = request.form.get("url")
-    if url == "https://google.com":
+    if url == "https://HTMLAnalyser--redarkham1234.repl.co" or url == "https://htmlanalyser--redarkham1234.repl.co":
       return render_template('easterEgg.html')
-    return render_template('options.html', url=url)
+    taglist_tocheck = ['a', 'p', 'img', 'h1', 'h2', 'h3', 'li'] #list of tags included in prototype
+    raw_html = simple_get(url)
+    htmll = BeautifulSoup(raw_html, 'html.parser') #type bs4
+    taglist_checked = check_tag(htmll, taglist_tocheck)
+    return render_template('options.html', url=url, taglist=taglist_checked)
 
 
 @app.route('/options', methods=["GET", "POST"])
@@ -53,6 +57,14 @@ def is_good_response(resp):
 def log_error(e):
     print(e)
 
+def check_tag(html, taglist_tocheck):
+  taglist_checked = []
+  for tag in taglist_tocheck:
+    if html.select(tag) != []:
+      taglist_checked.append(tag)
+  print(taglist_checked)
+  return taglist_checked
+
 def get_tag(tag_list, html):
   tagged_dict = {}
   for tagging in tag_list:
@@ -84,6 +96,60 @@ def get_explanation(tagged_dict,htmll,url):
         else: 
           explanation[explanationcounter] = explanation[explanationcounter] + "\nThe following code {0} is a/an '{1} tag'. The code will do the following things: ".format(curr_tag, tags)#the default starting explanation if this is not the first in the list
           #print(explanation[0] + "\n\n\n\n")
+        if tags == "li": #li tags got special case
+          ul_tags = htmll.select("ul")
+          ol_tags = htmll.select("ol")
+          ul_number = -1
+          ol_number = -1
+          i = 0
+          j = 0
+          number_of_ul = 0
+          number_of_ol = 0
+          if ul_tags != []: #absence of ul tag
+            while ul_number == -1:
+              ul_number = str(ul_tags[i]).find(str(curr_tag)) #get the number in the tag
+              i += 1
+              #print(i, "eee")
+              #print(ul_number, "www")
+              if i == len(ul_tags) and ul_number == -1: #prevent it from going over
+                ul_number = -2
+            if ul_number != -2: # exist in some li tag 
+              ul_checking = str(ul_tags[i-1])[:ul_number] 
+              #print(ul_checking, "hellllo")
+              number_of_ul = 1 #counting the current one 
+              #print(ul_checking.find("<li"), "HELLOOO")
+              while ul_checking.find("<li") != -1: # if there is more li tags above the curr_tag
+                number_of_ul += 1
+                curr_len = ul_checking.find("<li")
+                #print(ul_checking, curr_len+2, "h??\n")
+                ul_checking = ul_checking[curr_len+2:ul_number]
+          if ol_tags  != []: #absence of ol tags 
+            #print(ol_tags)
+            if number_of_ul == 0: #stops code from breaking if people have same li code for both ul and ol 
+              while ol_number == -1:
+                ol_number = str(ol_tags[j]).find(str(curr_tag)) #get the number in the tag
+                j += 1
+                #print(i, "eee")
+                #print(ul_number, "www")
+                if j == len(ol_tags) and ol_number == -1: #prevent it from going over
+                  ol_number = -2
+              if ol_number != -2: # exist in some li tag 
+                ol_checking = str(ol_tags[i-1])[:ol_number] 
+                #print(ul_checking, "hellllo")
+                number_of_ol = 1 #counting the current one 
+                #print(ul_checking.find("<li"), "HELLOOO")
+                while ol_checking.find("<li") != -1: # if there is more li tags above the curr_tag
+                  number_of_ol += 1
+                  curr_len = ol_checking.find("<li")
+                  #print(ul_checking, curr_len+2, "h??\n")
+                  ol_checking = ol_checking[curr_len+2:ol_number]
+
+          if number_of_ul != 0:    
+            explanation[explanationcounter] = explanation[explanationcounter] + "\n -> is the {0} entry of an unordered list".format(number_of_ul)
+          elif number_of_ol != 0:
+            explanation[explanationcounter] = explanation[explanationcounter] + "\n -> is the {0} entry of an ordered list".format(number_of_ol)
+          #print(number_of_ul, "__HELLO__")
+
         if curr_tag.text != '': #may need to check if it works or use "is not None"
           text = curr_tag.text 
           explanation[explanationcounter] = explanation[explanationcounter] + "\n -> Display the following text '{0}' ".format(text)
